@@ -1,0 +1,61 @@
+<html>
+
+<head>
+ <link rel="stylesheet" href="main.css">
+	<h2 align="center">Ship Online</h2>
+<h2 align="center"> 
+ <a  align="center" href='listing.htm'>Listing</a> 
+ <a  align="center" href='bidding.htm'>Bidding</a> 
+ <a  align="center" href='maintenance.htm'>Maintenance</a> 
+<a  align="center" href='logout.php'>LogOut</a> </h2 >
+ </head>
+
+<body>
+ <h2 align="center">
+ 
+						Dear Member , we welcome you to ShipOnline 
+ </h2>
+</body>
+
+</html>
+
+
+<script>
+
+document.onload = checkSession();
+
+
+function checkSession()
+{
+	var xHRObject1 = false;
+	if (window.XMLHttpRequest)
+	{
+		xHRObject1 = new XMLHttpRequest();
+	}
+	else if (window.ActiveXObject)
+	{
+		xHRObject1 = new ActiveXObject("Microsoft.XMLHTTP");
+	}
+
+
+
+
+    xHRObject1.open("GET", "checksession.php?check=session", true);
+    xHRObject1.onreadystatechange = getSession;
+function getSession(){
+    if ((xHRObject1.readyState == 4) &&(xHRObject1.status == 200))
+    {
+        var serverResponse1 = xHRObject1.responseText;
+	
+        if(serverResponse1.trim() == "unavailable"){
+			alert("You are not logged in ");    
+			location = "login.htm"
+        } 
+    }
+}-
+    xHRObject1.send(null);
+	
+	
+}
+
+</script>

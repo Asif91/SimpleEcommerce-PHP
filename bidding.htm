@@ -1,0 +1,175 @@
+<html>
+
+<head>
+ <link rel="stylesheet" href="main.css">
+<h2 align="center">Ship Online</h2>
+<h2 align="center">
+ <a  align="center" href='home.htm'>Home</a> 
+ <a  align="center" href='listing.htm'>Listing</a> 
+ <a  align="center" href='maintenance.htm'>Maintenance</a> 
+<a  align="center" href='logout.php'>LogOut</a> </h2 >
+ 
+ </head>
+<body>
+
+<div id ="information" > </div>
+
+
+</body>
+
+
+
+</html>
+
+<script>
+document.onload = checkSession();
+
+
+function checkSession()
+{
+	var xHRObject1 = false;
+	if (window.XMLHttpRequest)
+	{
+		xHRObject1 = new XMLHttpRequest();
+	}
+	else if (window.ActiveXObject)
+	{
+		xHRObject1 = new ActiveXObject("Microsoft.XMLHTTP");
+	}
+
+
+
+
+    xHRObject1.open("GET", "checksession.php?check=session", true);
+    xHRObject1.onreadystatechange = getSession;
+function getSession(){
+    if ((xHRObject1.readyState == 4) &&(xHRObject1.status == 200))
+    {
+        var serverResponse1 = xHRObject1.responseText;
+	
+        if(serverResponse1.trim() == "unavailable"){
+			alert("You are not logged in ");    
+			location = "login.htm"
+        } 
+		else{
+		
+		//getRows();
+		 retrieveInformation();
+		
+		}
+    }
+}-
+    xHRObject1.send(null);
+	
+	
+}
+
+
+//setInterval(retrieveInformation(),10000);
+
+function retrieveInformation() 
+{
+var xHRObject = false;
+
+if (window.XMLHttpRequest)
+    xHRObject = new XMLHttpRequest();
+else if (window.ActiveXObject)
+    xHRObject = new ActiveXObject("Microsoft.XMLHTTP");
+
+	
+      xHRObject.open("GET", "biddinghelper.php", true);
+	
+      xHRObject.onreadystatechange = function() {
+           if (xHRObject.readyState == 4 && xHRObject.status == 200)
+            
+			   document.getElementById('information').innerHTML = xHRObject.responseText;
+			   setTimeout(retrieveInformation,10000);
+      }
+      xHRObject.send(null); 
+}
+
+
+
+function placebid(clicked_id)
+{
+
+	var itemid = clicked_id.trim() ;
+	//alert(itemid);
+	 var txt;
+    var bid = prompt("Please enter your bid:", "");
+	
+    if (bid == null || bid == "") {
+       // alert("User cancelled the prompt.");
+    } 
+	
+	else {
+		 if (!(isNumber(bid.trim()) )  )
+		{
+			alert("Enter number e.g 22.00 ");
+		}
+		else
+		{
+			var xHRObject3 = false;
+
+			if (window.XMLHttpRequest)
+			xHRObject3 = new XMLHttpRequest();
+			else if (window.ActiveXObject)
+			xHRObject3 = new ActiveXObject("Microsoft.XMLHTTP");
+
+		
+			xHRObject3.open("GET", "buyhelper.php?action=bid&itemid=" + encodeURIComponent(itemid) + "&bid=" + encodeURIComponent(bid), true);
+		
+			xHRObject3.onreadystatechange = function() 
+			{
+				if (xHRObject3.readyState == 4 && xHRObject3.status == 200){
+				
+					   alert(xHRObject3.responseText);
+				}
+					
+			
+				   
+			}
+			xHRObject3.send(null); 
+		}	
+
+    }
+}
+
+function buynow(clicked_id)
+{
+	var itemid = clicked_id ;
+
+		var xHRObject4 = false;
+
+		if (window.XMLHttpRequest)
+		xHRObject4 = new XMLHttpRequest();
+		else if (window.ActiveXObject)
+		xHRObject4 = new ActiveXObject("Microsoft.XMLHTTP");
+
+		//alert(itemid);
+		xHRObject4.open("GET", "buyhelper.php?action=buy&itemid=" + encodeURIComponent(itemid), true);
+	
+		xHRObject4.onreadystatechange = function() 
+		{
+			if (xHRObject4.readyState == 4 && xHRObject4.status == 200){
+			
+				   alert(xHRObject4.responseText);
+			}
+				
+		
+			   
+		}
+		xHRObject4.send(null); 
+	
+	retrieveInformation();
+}
+function isNumber(value) {
+    if ((undefined === value) || (null === value)) {
+        return false;
+    }
+    if (typeof value == 'number') {
+        return true;
+    }
+    return !isNaN(value - 0);
+}
+</script>

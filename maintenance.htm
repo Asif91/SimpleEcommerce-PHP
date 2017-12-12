@@ -1,0 +1,136 @@
+<html>
+
+<head>
+ <link rel="stylesheet" href="main.css">
+<h2 align="center">Ship Online</h2>
+ <h2 align="center">  
+ <a  align="center" href='home.htm'>Home</a> 
+	<a  align="center" href='listing.htm'>Listing</a> 
+ <a  align="center" href='bidding.htm'>Bidding</a> 
+
+<a  align="center" href='logout.php'>LogOut</a> </h2 >
+
+ </head>
+
+<body>
+<h2 align="center"><button onclick = "processitems()">Process Auction Items</button> <button onclick = "generatereports()">Generate Reports</button></h2>
+
+</body>
+<div id="table" > </div>
+
+</html>
+
+<script>
+
+document.onload = checkSession();
+
+
+function checkSession()
+{
+	var xHRObject1 = false;
+	if (window.XMLHttpRequest)
+	{
+		xHRObject1 = new XMLHttpRequest();
+	}
+	else if (window.ActiveXObject)
+	{
+		xHRObject1 = new ActiveXObject("Microsoft.XMLHTTP");
+	}
+
+
+
+
+    xHRObject1.open("GET", "checksession.php?check=session", true);
+    xHRObject1.onreadystatechange = getSession;
+function getSession(){
+    if ((xHRObject1.readyState == 4) &&(xHRObject1.status == 200))
+    {
+        var serverResponse1 = xHRObject1.responseText;
+	
+        if(serverResponse1.trim() == "unavailable"){
+			alert("You are not logged in ");    
+			location = "login.htm"
+        } 
+    }
+}-
+    xHRObject1.send(null);
+	
+	
+}
+
+
+function processitems()
+{
+	var xHRObject2 = false;
+	if (window.XMLHttpRequest)
+	{
+		xHRObject2 = new XMLHttpRequest();
+	}
+	else if (window.ActiveXObject)
+	{
+		xHRObject2 = new ActiveXObject("Microsoft.XMLHTTP");
+	}
+
+//	alert("main");
+
+
+
+    xHRObject2.open("GET", "maintenance.php?action=processitems", true);
+	//alert("ojb open");
+    xHRObject2.onreadystatechange = getprocessed ;
+
+	function getprocessed(){
+	//	alert("readonly");
+    if ((xHRObject2.readyState == 4) &&(xHRObject2.status == 200))
+    {
+        var serverResponse2 = xHRObject2.responseText;
+	
+        
+				alert(serverResponse2);    
+				
+        
+    }
+}-
+    xHRObject2.send(null);
+	
+
+
+}
+
+function generatereports()
+{
+
+	var xHRObject3 = false;
+	if (window.XMLHttpRequest)
+	{
+		xHRObject3 = new XMLHttpRequest();
+	}
+	else if (window.ActiveXObject)
+	{
+		xHRObject3 = new ActiveXObject("Microsoft.XMLHTTP");
+	}
+
+
+//alert("generatereports");
+
+    xHRObject3.open("GET", "maintenance.php?action=generatereports", true);
+    xHRObject3.onreadystatechange = getReport ;
+	
+	function getReport(){
+	//alert("gen fun");
+    if ((xHRObject3.readyState == 4) &&(xHRObject3.status == 200))
+    {
+	
+		//alert("ss");
+        var serverResponse3 = xHRObject3.responseText;
+		//alert(serverResponse3);	
+				document.getElementById("table").innerHTML = serverResponse3;
+	
+         
+    }
+}-
+    xHRObject3.send(null);
+	
+
+}
+</script>

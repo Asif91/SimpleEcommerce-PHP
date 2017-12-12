@@ -1,0 +1,119 @@
+<!-- 
+	it is a login page where user will enter its login details , on success user will be redirected to request page 
+	@author Asif Khan 101390278
+<object name="foo" type="text/html" data="register.htm"></object>
+<embed type="text/html" src="register.htm">
+	-->
+<!-- html form -->
+<html>
+<head>
+ <link rel="stylesheet" href="main.css">
+ <h2 align="center">Ship Online</h2>
+</head>
+<body>
+
+
+	<div class="container">
+	 
+		<form class="form-style-5" onsubmit="login()">
+		<legend><span class="number">1</span> User Info </legend>
+			<label class="form-signin-heading"> Please Login below or to register as a new user click here : <a  align="center" href='register.htm'>Register</a> </label>
+			<span ></span>
+			<label><span>Enter Your Email: </span> <input type="email" id="email" name="email" placeholder="email" required> </label> <br>
+			<label><span>Password :</span> <input type="password"  name="password" id="inputPassword"  placeholder="Password" required></label>
+	        <button class="btn btn-lg btn-primary btn-block" type="submit" >Login</button>
+			<button type="reset" value="Reset">Reset</button>
+		</form>
+	</div>
+
+<span id="error"> </span>
+
+
+
+</body>
+</html>
+
+
+<script>
+
+document.onload = checkSession() ; 
+
+function checkSession()
+{
+	var xHRObject1 = false;
+	if (window.XMLHttpRequest)
+	{
+		xHRObject1 = new XMLHttpRequest();
+	}
+	else if (window.ActiveXObject)
+	{
+		xHRObject1 = new ActiveXObject("Microsoft.XMLHTTP");
+	}
+
+
+
+
+    xHRObject1.open("GET", "checksession.php?check=session", true);
+    xHRObject1.onreadystatechange = getSession;
+function getSession(){
+    if ((xHRObject1.readyState == 4) &&(xHRObject1.status == 200))
+    {
+        var serverResponse1 = xHRObject1.responseText;
+		if(serverResponse1.trim() != "unavailable"){
+			alert(serverResponse1 + "You are already logged in ");
+
+            location = "home.htm"
+        } 
+    }
+}-
+    xHRObject1.send(null);
+	
+	
+}
+
+
+
+
+
+
+var xHRObject = false;
+if (window.XMLHttpRequest)
+{
+    xHRObject = new XMLHttpRequest();
+}
+else if (window.ActiveXObject)
+{
+    xHRObject = new ActiveXObject("Microsoft.XMLHTTP");
+}
+
+
+
+
+
+function login() {
+//alert("login");
+    event.preventDefault();
+    var email = document.getElementById('email').value;
+    var password = document.getElementById('inputPassword').value;
+	//alert("fff");
+    xHRObject.open("GET", "loginhelper.php?action=login&email=" + encodeURIComponent(email) + "&pass=" + encodeURIComponent(password), true);
+//alert("loginhelper");
+    xHRObject.onreadystatechange = getData;
+    xHRObject.send(null); 
+}
+
+function getData(){
+//alert("login data");
+    if ((xHRObject.readyState == 4) &&(xHRObject.status == 200))
+    {
+        var serverResponse = xHRObject.responseText;
+	//	alert(serverResponse);
+        if(serverResponse.trim() == "OK"){
+            location = "home.htm"
+        } else {
+            document.getElementById("error").innerHTML = serverResponse;
+        }
+    }
+}
+
+ </script>

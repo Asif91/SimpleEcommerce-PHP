@@ -1,0 +1,117 @@
+<html>
+<head>
+
+ <link rel="stylesheet" href="main.css">
+  <h2 align="center">Ship Online</h2>
+</head>
+
+
+<body>
+
+
+	<div class="container">
+	 
+		<form class="form-style-5" onsubmit="userRegistration()" >
+		<legend><span class="number">1</span> Registration Info</legend>
+			<label class="form-signin-heading"> Please Enter Details to register as a new user or if existing customer click here : <a  align="center" href='login.htm'>Login</a> </label>
+			<span ></span>
+			<label><span>First Name: </span><input  type="text" id="fname" name="fname" placeholder="first name" required> </label> <br>
+			<label><span>Last Name: </span><input  type="text"  id="lname" name="lname" placeholder="last name" required> </label> <br>
+			<label><span>Email: </span><input type="email" name="email" id="email" placeholder="email" required> </label> <br>
+		      <button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
+			  <button type="reset" value="Reset">Reset</button>
+		</form>
+
+		</div>
+<b id="error" > </b >
+
+ 
+
+
+</body>
+
+</html>
+
+<!-- Javascript code -->
+<script>
+
+
+
+document.onload = checkSession() ; 
+
+function checkSession()
+{
+	var xHRObject1 = false;
+	if (window.XMLHttpRequest)
+	{
+		xHRObject1 = new XMLHttpRequest();
+	}
+	else if (window.ActiveXObject)
+	{
+		xHRObject1 = new ActiveXObject("Microsoft.XMLHTTP");
+	}
+
+
+
+
+    xHRObject1.open("GET", "checksession.php?check=session", true);
+    xHRObject1.onreadystatechange = getSession;
+function getSession(){
+    if ((xHRObject1.readyState == 4) &&(xHRObject1.status == 200))
+    {
+        var serverResponse1 = xHRObject1.responseText;
+
+        if(serverResponse1.trim() != "unavailable"){
+		alert( "You are already logged in ");
+			location = "home.htm"
+        } 
+    }
+}-
+    xHRObject1.send(null);
+	
+	
+}
+
+
+
+ var xHRObject = false;
+if (window.XMLHttpRequest)
+{
+    xHRObject = new XMLHttpRequest();
+}
+else if (window.ActiveXObject)
+{
+    xHRObject = new ActiveXObject("Microsoft.XMLHTTP");
+}
+
+function userRegistration(){
+
+    event.preventDefault();
+
+    var email = document.getElementById('email').value;
+    var fname = document.getElementById('fname').value;
+    var sname = document.getElementById('lname').value;
+	xHRObject.open("GET", "registerhelper.php?email=" + encodeURIComponent(email) + "&fname=" + encodeURIComponent(fname) + "&sname=" + encodeURIComponent(sname), true);
+  //  alert("sphp") ;
+	xHRObject.onreadystatechange = getData;
+   
+	xHRObject.send(null); 
+}
+
+function getData(){
+
+    if ((xHRObject.readyState == 4) &&(xHRObject.status == 200))
+    {
+        var serverResponse = xHRObject.responseText;
+//		alert(serverResponse);
+        if(serverResponse.trim() == "OK"){
+			document.getElementById("error").innerHTML = "you are successfully registered check your email for password and other information";
+			alert("Registration Successful , you are being redirected to Home Page") ;
+			location = "home.htm" ;
+		}
+		else {
+		document.getElementById("error").innerHTML = serverResponse;
+        }
+    }
+}
+</script>
