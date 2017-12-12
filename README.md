@@ -1,0 +1,2 @@
+# SimpleEcommerce-PHP
+a simple web-based selling and buying system called ShopOnline using xml databasse and xmlHTTPRequest for clitnet server communication in php. ShopOnline allows sellers to list items for selling and buyers to bid for the items based on the English Auction strategy (http://en.wikipedia.org/wiki/English_auction), which is a popular strategy used in many systems such as eBay, real-estate auction. Five components (registration, login, listing, bidding, and maintenance) .
